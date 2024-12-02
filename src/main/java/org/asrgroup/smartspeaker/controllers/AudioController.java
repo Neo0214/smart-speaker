@@ -46,7 +46,6 @@ public class AudioController {
             e.printStackTrace();
             return new AudioResponse("0","error");
         }
-
         
         // 返回处理结果
         return new AudioResponse(getID(line),gptAnswer);
