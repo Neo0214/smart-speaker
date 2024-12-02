@@ -47,7 +47,6 @@ public class AudioController {
             return new AudioResponse("0","error");
         }
         // 返回处理结果
-
         return new AudioResponse(getID(line),gptAnswer);
     }
 
