@@ -5,6 +5,7 @@ pipeline{
             args '-p 8081:8081'
         }
     }
+    
     stages{
         stage('Build'){
             steps{
