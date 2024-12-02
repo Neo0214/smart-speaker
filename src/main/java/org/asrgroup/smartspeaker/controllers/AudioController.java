@@ -41,6 +41,7 @@ public class AudioController {
                 System.out.println(line);
                 nextLine = reader.readLine();
             }
+            
             reader.close();
         }catch (IOException e){
             e.printStackTrace();
