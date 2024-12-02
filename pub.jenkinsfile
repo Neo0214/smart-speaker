@@ -1,7 +1,7 @@
 pipeline{
     agent{
         docker{
-            image 'd833a10812ed'
+            image 'dockerpull.org/maven:3.8.4-openjdk-17'
             args '-p 8081:8081'
         }
     }
