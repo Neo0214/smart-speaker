@@ -1,0 +1,34 @@
+pipeline{
+    agent{
+        docker{
+            image 'd833a10812ed'
+            args '-p 8081:8081'
+        }
+    }
+    
+    stages{
+        stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test'){
+            steps{
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy'){
+            steps{
+                sh 'java -jar target/*.jar'
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}
