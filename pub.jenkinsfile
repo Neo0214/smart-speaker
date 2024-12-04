@@ -5,7 +5,7 @@ pipeline{
             steps{
                 sh 'docker stop smart-speaker || true'
                 sh 'docker rm smart-speaker || true'
-                sh 'docker run -it -d -name smart-speaker -p 8081:8081 -v $PWD:/app -v /log/smart-speaker.log:/log/smart-speaker.log dockerpull.org/maven:3.8.4-openjdk-17'
+                sh 'docker run -it -d --name smart-speaker -p 8081:8081 -v $PWD:/app -v /log/smart-speaker.log:/log/smart-speaker.log dockerpull.org/maven:3.8.4-openjdk-17'
                 sh 'docker start smart-speaker'
                 
             }
