@@ -18,13 +18,23 @@ pipeline{
         }
         stage('Deploy'){
             steps{
-                sh 'java -jar target/*.jar'
+                sh 'nohup java -jar target/*.jar > /log/smart-speaker.log 2>&1 &'
             }
         }
     }
     post {
         success {
             echo 'Build completed successfully!'
+            emailext(
+                subject: 'Smart Speaker Build Success',
+                body:'''
+                <p>Congratulations! Your jenkins build task finished successfully.</p>
+                <p>Job Name: ${env.JOB_NAME}</p>
+                <p>link click <a href="${env.BUILD_URL}">here</a> to see the build details.</p>
+                <p>Provided by Neo0214</p>
+                ''',
+                to:'kikikiki43299@gmail.com'
+            )
         }
         failure {
             echo 'Build failed!'
