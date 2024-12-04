@@ -33,11 +33,20 @@ pipeline{
                 <p>link click <a href="${env.BUILD_URL}">here</a> to see the build details.</p>
                 <p>Provided by Neo0214</p>
                 ''',
-                to:'kikikiki43299@gmail.com'
+                to:'1447489091@qq.com'
             )
         }
         failure {
             echo 'Build failed!'
+            emailext(
+                subject: 'Smart Speaker Build Failed',
+                body:'''
+                <p>Warning! Your jenkins build task failed.</p>
+                <p>Job Name: ${env.JOB_NAME}</p>
+                <p>link click <a href="${env.BUILD_URL}">here</a> to see the build details.</p>
+                <p>Provided by Neo0214</p>
+                ''',
+                to:'1447489091@qq.com'
         }
     }
 }
