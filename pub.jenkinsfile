@@ -30,7 +30,7 @@ pipeline{
                 body:'''
                 <p>Congratulations! Your jenkins build task finished successfully.</p>
                 <p>Job Name: ${env.JOB_NAME}</p>
-                <p>link click <a href="${env.BUILD_URL}">here</a> to see the build details.</p>
+                <p>link click <a href="${env.BUILD_URL}">here</a> to see details.</p>
                 <p>Provided by Neo0214</p>
                 ''',
                 to:'1447489091@qq.com'
@@ -43,10 +43,11 @@ pipeline{
                 body:'''
                 <p>Warning! Your jenkins build task failed.</p>
                 <p>Job Name: ${env.JOB_NAME}</p>
-                <p>link click <a href="${env.BUILD_URL}">here</a> to see the build details.</p>
+                <p>link click <a href="${env.BUILD_URL}">here</a> to see details.</p>
                 <p>Provided by Neo0214</p>
                 ''',
                 to:'1447489091@qq.com'
+            )
         }
     }
 }
