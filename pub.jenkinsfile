@@ -12,14 +12,14 @@ pipeline{
         }
         stage('Build'){
             steps{
-                sh 'docker exec -it smart-speaker /bin/bash'
+                sh 'docker exec smart-speaker /bin/bash'
                 sh 'cd /app'
                 sh 'mvn package'
             }
         }
         stage('Deploy'){
             steps{
-                sh 'docker exec -it smart-speaker /bin/bash'
+                sh 'docker exec smart-speaker /bin/bash'
                 sh 'cd /app/target'
                 sh 'nohup java -jar target/*.jar > /log/smart-speaker.log 2>&1 &'
             }
