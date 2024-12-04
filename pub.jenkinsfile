@@ -1,23 +1,26 @@
 pipeline{
-    agent{
-        docker{
-            image 'dockerpull.org/maven:3.8.4-openjdk-17'
-            args '-p 8081:8081'
-        }
-    }    
+    agent any  
     stages{
-        stage('Build'){
+        stage('Init'){
             steps{
-                sh 'mvn clean package'
+                sh 'docker stop smart-speaker || true'
+                sh 'docker rm smart-speaker || true'
+                sh 'docker run -it -d -name smart-speaker -p 8081:8081 -v $PWD:/app -v /log/smart-speaker.log:/log/smart-speaker.log dockerpull.org/maven:3.8.4-openjdk-17'
+                sh 'docker start smart-speaker'
+                
             }
         }
-        stage('Test'){
+        stage('Build'){
             steps{
-                sh 'mvn test'
+                sh 'docker exec -it smart-speaker /bin/bash'
+                sh 'cd /app'
+                sh 'mvn package'
             }
         }
         stage('Deploy'){
             steps{
+                sh 'docker exec -it smart-speaker /bin/bash'
+                sh 'cd /app/target'
                 sh 'nohup java -jar target/*.jar > /log/smart-speaker.log 2>&1 &'
             }
         }
@@ -25,29 +28,9 @@ pipeline{
     post {
         success {
             echo 'Build completed successfully!'
-            emailext(
-                subject: 'Smart Speaker Build Success',
-                body:'''
-                <p>Congratulations! Your jenkins build task finished successfully.</p>
-                <p>Job Name: ${env.JOB_NAME}</p>
-                <p>link click <a href="${env.BUILD_URL}">here</a> to see details.</p>
-                <p>Provided by Neo0214</p>
-                ''',
-                to:'1447489091@qq.com'
-            )
         }
         failure {
             echo 'Build failed!'
-            emailext(
-                subject: 'Smart Speaker Build Failed',
-                body:'''
-                <p>Warning! Your jenkins build task failed.</p>
-                <p>Job Name: ${env.JOB_NAME}</p>
-                <p>link click <a href="${env.BUILD_URL}">here</a> to see details.</p>
-                <p>Provided by Neo0214</p>
-                ''',
-                to:'1447489091@qq.com'
-            )
         }
     }
 }
