@@ -43,7 +43,9 @@ public class AudioController {
             }
             
             reader.close();
+
         }catch (IOException e){
+            
             e.printStackTrace();
             return new AudioResponse("0","error");
         }
