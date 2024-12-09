@@ -1,27 +1,21 @@
-pipeline{
-    agent any  
-    stages{
-        stage('Init'){
-            steps{
+pipeline {
+    agent any
+    stages {
+        stage('Init') {
+            steps {
                 sh 'docker stop smart-speaker || true'
                 sh 'docker rm smart-speaker || true'
-                sh 'docker run -it -d --name smart-speaker -p 8081:8081 -v /var/jenkins_home/workspace/smart-speaker-backend:/app -v /log/smart-speaker.log:/log/smart-speaker.log dockerpull.org/maven:3.8.4-openjdk-17'
-                sh 'docker start smart-speaker'
-                
+                sh 'docker run -d --name smart-speaker -p 8081:8081 -v /var/jenkins_home/workspace/smart-speaker-backend:/app -v /log/smart-speaker.log:/log/smart-speaker.log dockerpull.org/maven:3.8.4-openjdk-17'
             }
         }
-        stage('Build'){
-            steps{
-                sh 'docker exec smart-speaker /bin/bash'
-                sh 'cd /app'
-                sh 'mvn package'
+        stage('Build') {
+            steps {
+                sh 'docker exec smart-speaker mvn -f /app/pom.xml package'
             }
         }
-        stage('Deploy'){
-            steps{
-                sh 'docker exec smart-speaker /bin/bash'
-                sh 'cd /app/target'
-                sh 'nohup java -jar target/*.jar > /log/smart-speaker.log 2>&1 &'
+        stage('Deploy') {
+            steps {
+                sh 'docker exec smart-speaker java -jar /app/target/*.jar > /log/smart-speaker.log 2>&1 &'
             }
         }
     }
