@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'docker exec smart-speaker mvn -f /app/pom.xml package'
+                sh 'docker exec smart-speaker ls /app'
             }
         }
         stage('Deploy') {
